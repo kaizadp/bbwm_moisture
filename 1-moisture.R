@@ -5,18 +5,24 @@ library(ggplot2)
 library(lubridate)
 
 
-moisture = sapply(list.files(path = "moisture/",pattern = "*.csv", full.names = TRUE),
-                  read_csv, simplify = FALSE) %>% bind_rows()
+files <- list.files(path = "moisture/", pattern = "*.csv", full.names = TRUE)
+message("Reading ", length(files), " files")
+moisture <- sapply(files, read_csv, simplify = FALSE) %>% bind_rows()
 
-moisture2 = 
-  moisture %>% 
-  dplyr::mutate(
-# this parses only those formats with time in HH:MM (24-hour) format. AM/PM formats are NA
-    Datetime2 = parse_datetime(Datetime, "%m%.%d%.%Y%T"),
-# this tries to parse everythng, but only does II:MM:SS AM/PM correctly. the HH:MM (24-hour) is parsed wrong
-    datetime = mdy_hms(Datetime))
-# so for now, parse both ways, and then select only the relevant cells to make a new combined column.
+# Timestamps here are a mess and in multiple formats. Parse using
+# three different formats and pick the one that succeeds. I've
+# checked (albeit not exhaustively) and don't see a case where
+# dt1/dt2/dt3 parse validly but with different timestamps
+moisture %>% 
+  mutate(dt1 = mdy_hms(Datetime),
+         dt2 = mdy_hm(Datetime),
+         dt3 = ymd_hm(Datetime),
+         DATETIME = case_when(!is.na(dt1) ~ dt1,
+                              !is.na(dt2) ~ dt2,
+                              !is.na(dt3) ~ dt3)) %>% 
+  select(-dt1, -dt2, -dt3) ->
+  moisture_parsed
 
-ggplot(moisture, aes(x = Datetime, y = Moisture_m3_m3))+
+p <- ggplot(moisture_parsed, aes(x = DATETIME, y = Moisture_m3_m3, color = Compartment))+
   geom_point()
-                  
+print(p)
