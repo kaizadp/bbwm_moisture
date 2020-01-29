@@ -23,6 +23,6 @@ moisture %>%
   select(-dt1, -dt2, -dt3) ->
   moisture_parsed
 
-ggplot(moisture_parsed, aes(x = DATETIME, y = Moisture_m3_m3, color = Compartment))+
+p <- ggplot(moisture_parsed, aes(x = DATETIME, y = Moisture_m3_m3, color = Compartment))+
   geom_point()
-                  
+print(p)
