@@ -1,0 +1,70 @@
+---
+title: " HOBO data for soil moisture - Bear Brook Watershed in Maine"
+author: "Kaizad Patel"
+output: github_document
+---
+
+Run: `r Sys.Date()`
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo=FALSE,message=FALSE,warning=FALSE,
+                      collapse = TRUE,
+                      comment = "#>" #, fig.path = "images/"
+                      )
+
+library(RColorBrewer)
+source("1-moisture.R")
+moisture_daily=readd(moisture_daily)
+moisture_3hour=readd(moisture_3hour)
+```
+
+## metadata
+|||
+-----|---|
+Site| The Bear Brook Watershed in Maine |
+Location | |
+Variable measured | soil moisture|
+Units of measurement |m3/m3, divide by 100 for volumetric moisture content|
+Instruments used | HOBO |
+Depth in soil | 10 cm, 25 cm in mineral soil|
+Period of measurement | 2003-2016 |
+Frequency of measurement | 3 hours|
+Frequency of data | 3 hours, daily|
+
+
+
+
+## 3-hour values
+```{r}
+# plots
+ggplot(moisture_3hour, aes(x=DATETIME, y = Moisture_m3_m3, color=Watershed))+
+  geom_point(size=0.5)+
+  ylim(0,0.4)+
+  scale_color_brewer(palette = "Dark2")+
+  facet_grid(DEPTH~Forest)+theme_bw()+
+  ggtitle("3-hour values")
+```
+
+## daily values
+```{r}
+# plots
+ggplot(moisture_daily, aes(x=DATE, y = Moisture_m3_m3, color=Watershed))+
+  geom_point(size=0.5,alpha=1)+
+  ylim(0,0.4)+
+  scale_color_brewer(palette = "Dark2")+
+  facet_grid(DEPTH~Forest)+theme_bw()+
+  ggtitle("Daily values")
+```
+
+## number of data points
+```{r}
+summary = 
+  moisture_daily %>% 
+  group_by(Forest, DEPTH,DATE) %>% 
+  dplyr::summarise(n = n())
+
+ggplot(summary, aes(x=DATE, y = n))+
+  geom_point(size=0.5,alpha=1)+
+  facet_grid(DEPTH~Forest)
+```
+
