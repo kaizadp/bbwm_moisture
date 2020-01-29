@@ -24,7 +24,7 @@ moisture_3hour=readd(moisture_3hour)
 Site| The Bear Brook Watershed in Maine |
 Location | |
 Variable measured | soil moisture|
-Units of measurement |m3/m3, divide by 100 for volumetric moisture content|
+Units of measurement |m3/m3, volumetric moisture content|
 Instruments used | HOBO |
 Depth in soil | 10 cm, 25 cm in mineral soil|
 Period of measurement | 2003-2016 |
