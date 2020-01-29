@@ -1,0 +1,14 @@
+﻿Title,Soil moisture for the Bear Brook Watershed in Maine
+Authors,"Kaizad F. Patel, Ivan J. Fernandez, Cheryl J. Spencer"
+Site,Bear Brook Watershed in Maine
+Location,"﻿44°52' N, 68°6' W"
+Watersheds,"East Bear (EB), West Bear (WB)"
+Forest type,"deciduous hardwood (HW), softwood (SW)"
+Soil order,Spodosols
+Units of measurement,m3/m3 (volumetric soil moisture)
+Instrument used,HOBO MicroStation data logger (Onset Corp.)
+Depth in soil,"10 cm, 25 cm in mineral soil"
+Period of measurement,2003-2016
+Frequency of final data output,Daily
+,
+For more information about the site,﻿DOI: 10.1038/sdata.2018.153
